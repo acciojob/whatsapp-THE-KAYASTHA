@@ -19,6 +19,12 @@ public class Message {
         this.timestamp= Calendar.getInstance().getTime();
 
     }
+    public Message(int id,String content){
+        this.content=content;
+        this.timestamp= Calendar.getInstance().getTime();
+        this.id=id;
+
+    }
 
     public void setId(int id) {
         this.id = id;
