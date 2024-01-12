@@ -27,7 +27,12 @@ public class WhatsappController {
         //If the mobile number exists in database, throw "User already exists" exception
         //Otherwise, create the user and return "SUCCESS"
 
-        return whatsappService.createUser(name, mobile);
+        String ans=whatsappService.createUser(name, mobile);
+        if(ans.equals("User already exists")){
+            throw new Exception("User already exists");
+        }
+
+        return ans;
     }
 
     @PostMapping("/add-group")
@@ -55,10 +60,16 @@ public class WhatsappController {
     @PutMapping("/send-message")
     public int sendMessage(Message message, User sender, Group group) throws Exception{
         //Throw "Group does not exist" if the mentioned group does not exist
-        //Throw "You are not allowed to send message" if the sender is not a member of the group
-        //If the message is sent successfully, return the final number of messages in that group.
-
-        return whatsappService.sendMessage(message, sender, group);
+        //Throw "You are not allowed to send message" if the sender is not a member of the group //-1
+        //If the message is sent successfully, return the final number of messages in that group.//-2
+        int ans=whatsappService.sendMessage(message, sender, group);
+        if(ans==-1){
+            throw new Exception("Group does not exist");
+        }
+        if(ans==-2){
+            throw new Exception("You are not allowed to send message");
+        }
+        return ans ;
     }
     @PutMapping("/change-admin")
     public String changeAdmin(User approver, User user, Group group) throws Exception{
@@ -66,8 +77,18 @@ public class WhatsappController {
         //Throw "Approver does not have rights" if the approver is not the current admin of the group
         //Throw "User is not a participant" if the user is not a part of the group
         //Change the admin of the group to "user" and return "SUCCESS". Note that at one time there is only one admin and the admin rights are transferred from approver to user.
+            String ans=whatsappService.changeAdmin(approver, user, group);
 
-        return whatsappService.changeAdmin(approver, user, group);
+            if(ans.equals("Group does not exist")){
+                throw new Exception("Group does not exist");
+            }
+            if(ans.equals("Approver does not have rights")){
+                throw new Exception("Approver does not have rights");
+            }
+            if(ans.equals("User is not a participant")){
+                throw new Exception("User is not a participant");
+            }
+        return ans;
     }
 
     @DeleteMapping("/remove-user")
