@@ -49,7 +49,7 @@ public class WhatsappRepository {
                 return temp;
         }
 
-        Group temp=new Group("Group"+customGroupCount++,users.size());
+        Group temp=new Group("Group "+customGroupCount++,users.size());
 
         groupUserMap.put(temp,users);
         return temp;
