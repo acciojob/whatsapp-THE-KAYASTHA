@@ -46,6 +46,9 @@ public class WhatsappController {
         //For example: Consider userList1 = {Alex, Bob, Charlie}, userList2 = {Dan, Evan}, userList3 = {Felix, Graham, Hugh}.
         //If createGroup is called for these userLists in the same order, their group names would be "Group 1", "Evan", and "Group 2" respectively.
 
+
+
+
         return whatsappService.createGroup(users);
     }
 
@@ -95,12 +98,21 @@ public class WhatsappController {
     public int removeUser(User user) throws Exception{
         //This is a bonus problem and does not contains any marks
         //A user belongs to exactly one group
-        //If user is not found in any group, throw "User not found" exception
-        //If user is found in a group and it is the admin, throw "Cannot remove admin" exception
+        //If user is not found in any group, throw "User not found" exception  -1
+        //If user is found in a group and it is the admin, throw "Cannot remove admin" exception -2
         //If user is not the admin, remove the user from the group, remove all its messages from all the databases, and update relevant attributes accordingly.
         //If user is removed successfully, return (the updated number of users in the group + the updated number of messages in group + the updated number of overall messages)
+        int ans=whatsappService.removeUser(user);
 
-        return 0;
+        if(ans==-1){
+            throw new Exception("User not found");
+        }
+        if(ans==-2){
+            throw new Exception("Cannot remove admin");
+        }
+
+
+        return ans;
     }
 
     @GetMapping("/find-messages")
@@ -108,7 +120,10 @@ public class WhatsappController {
         //This is a bonus problem and does not contains any marks
         // Find the Kth latest message between start and end (excluding start and end)
         // If the number of messages between given time is less than K, throw "K is greater than the number of messages" exception
-
-        return null;
+            String ans=whatsappService.findMessage(start,end,K);
+            if(ans.equals("K is greater than the number of messages")){
+                throw  new Exception("K is greater than the number of messages");
+            }
+        return ans;
     }
 }
